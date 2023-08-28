@@ -1,6 +1,7 @@
 //DEPENDENCIES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //timer counts down from pressing start
 var timer = document.querySelector("#time");
+var timeLeft = 45;
 //question changes each time
 var questions = document.querySelector("#questions");
 //answers change each time
@@ -16,14 +17,14 @@ var startquiz = document.querySelector("#startquiz");
 var title = document.querySelector("#title");
 
 var highscoreEl = document.querySelector("#highscores");
+
+var answerGradeEl = document.querySelector("#answerGrade");
 //DATA~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //highscores tracked
 //time (score) tracked
 
 //FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function countdown() {
-  var timeLeft = 45;
-
   var timeInterval = setInterval(function () {
     if (timeLeft > 1) {
       timer.textContent = timeLeft + " seconds remaining";
@@ -34,7 +35,7 @@ function countdown() {
     } else {
       timer.textContent = "";
       clearInterval(timeInterval);
-      //add in highscore function
+      highScores();
     }
   }, 1000);
 }
@@ -53,8 +54,17 @@ function questionOne() {
   answers.appendChild(answerFour);
 
   answers.addEventListener("click", function () {
+    oneAnswer();
     questionTwo();
   });
+}
+function oneAnswer(event) {
+  if (event === answerTwo) {
+    answerGradeEl.innerHTML = "<i>Correct!</i>";
+  } else {
+    answerGradeEl.innerHTML = "<i>Wrong!</i>";
+    timeLeft = timeLeft - 10;
+  }
 }
 function questionTwo() {
   questions.textContent = "What does the <p> tag indicate in HTML";
@@ -66,9 +76,17 @@ function questionTwo() {
 
   answers.addEventListener("click", function () {
     questionThree();
+    twoAnswer();
   });
 }
-
+function twoAnswer(event) {
+  if (event === answerOne) {
+    answerGradeEl.innerHTML = "<i>Correct!</i>";
+  } else {
+    answerGradeEl.innerHTML = "<i>Wrong!</i>";
+    timeLeft = timeLeft - 10;
+  }
+}
 function questionThree() {
   questions.textContent =
     "JavaScript functions are contained in which of the following:";
@@ -80,9 +98,17 @@ function questionThree() {
 
   answers.addEventListener("click", function () {
     questionFour();
+    threeAnswer();
   });
 }
-
+function threeAnswer(event) {
+  if (event === answerFour) {
+    answerGradeEl.innerHTML = "<i>Correct!</i>";
+  } else {
+    answerGradeEl.innerHTML = "<i>Wrong!</i>";
+    timeLeft = timeLeft - 10;
+  }
+}
 function questionFour() {
   questions.textContent = "HTML Stands for:";
 
@@ -93,9 +119,17 @@ function questionFour() {
 
   answers.addEventListener("click", function () {
     questionFive();
+    fourAnswer();
   });
 }
-
+function fourAnswer(event) {
+  if (event === answerThree) {
+    answerGradeEl.innerHTML = "<i>Correct!</i>";
+  } else {
+    answerGradeEl.innerHTML = "<i>Wrong!</i>";
+    timeLeft = timeLeft - 10;
+  }
+}
 function questionFive() {
   questions.innerHTML = "Which of the following does an array <i>not</i> hold?";
 
@@ -105,8 +139,17 @@ function questionFive() {
   answerFour.textContent = "Boolean Values";
 
   answers.addEventListener("click", function () {
+    fiveAnswer();
     highScores();
   });
+}
+function fiveAnswer(event) {
+  if (event === answerTwo) {
+    answerGradeEl.innerHTML = "<i>Correct!</i>";
+  } else {
+    answerGradeEl.innerHTML = "<i>Wrong!</i>";
+    timeLeft = timeLeft - 10;
+  }
 }
 function highScores() {
   highscoreEl.textContent = "";
@@ -132,5 +175,7 @@ startquiz.addEventListener("click", function () {
 //display if last question was right
 //repeat until the last question
 //enter initials for high scores
-
+highscoreEl.addEventListener("click", function () {
+  highScores();
+});
 //INITIALIZATIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~
