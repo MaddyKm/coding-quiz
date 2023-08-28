@@ -14,6 +14,8 @@ var answerFour = document.createElement("button");
 //start quiz button
 var startquiz = document.querySelector("#startquiz");
 var title = document.querySelector("#title");
+
+var highscoreEl = document.querySelector("#highscores");
 //DATA~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //highscores tracked
 //time (score) tracked
@@ -95,8 +97,7 @@ function questionFour() {
 }
 
 function questionFive() {
-  questions.innerHTML =
-    "Which of the following does an array <strong>not</strong> hold?";
+  questions.innerHTML = "Which of the following does an array <i>not</i> hold?";
 
   answerOne.textContent = "Strings";
   answerTwo.textContent = "Variables";
@@ -104,14 +105,21 @@ function questionFive() {
   answerFour.textContent = "Boolean Values";
 
   answers.addEventListener("click", function () {
-    questionFive();
+    highScores();
   });
 }
+function highScores() {
+  highscoreEl.textContent = "";
+  questions.textContent = "High Scores";
+  answerOne.remove();
+  answerTwo.remove();
+  answerThree.remove();
+  answerFour.remove();
+}
 function startQuiz() {
-  console.log("hello world");
+  countdown();
   title.innerHTML = "";
   startquiz.remove();
-  countdown();
   questionOne();
 }
 //USER INTERACTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~
