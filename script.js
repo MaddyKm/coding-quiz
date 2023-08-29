@@ -51,7 +51,7 @@ var questions = [
   },
   {
     question: "Which of the following does an array not hold?",
-    answers: ["Strings", "Numbers", "Boolean Values", "Functions"],
+    answers: ["Strings", "Numbers", "Boolean Values", "CSS Styles"],
     correct: "Functions",
   },
 ];
@@ -79,6 +79,7 @@ function countdown() {
 
 function displayQuestion() {
   questionEl.textContent = questions[currentQuestion].question;
+  questionEl.setAttribute("style", "font-size: 25px; padding: 1em");
 }
 
 function displayAnswers() {
@@ -90,6 +91,15 @@ function displayAnswers() {
     answerButton.addEventListener("click", checkAnswer);
 
     answersEl.appendChild(answerButton);
+
+    answersEl.setAttribute(
+      "style",
+      "display: flex; flex-direction: column; padding: 1em"
+    );
+    answerButton.setAttribute(
+      "style",
+      "background-color: purple; color: bisque; width: 45%; padding: 1em"
+    );
   }
 }
 function checkAnswer(event) {
@@ -136,6 +146,7 @@ function highScores() {
   answerGradeEl.remove();
   startquiz.remove();
   questionEl.remove();
+  timer.remove();
   title.textContent = "High Scores";
   var storedInitials = localStorage.getItem("initials");
   var storedScore = localStorage.getItem("score");
