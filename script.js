@@ -6,7 +6,7 @@ var timeLeft = 45;
 var questionEl = document.querySelector("#questions");
 //answers change each time
 var answersEl = document.querySelector("#answers");
-
+var instructions = document.querySelector("#instructions");
 //pop up that says right or wrong and remaind for only 2 seconds
 //start quiz button
 var startquiz = document.querySelector("#startquiz");
@@ -95,7 +95,7 @@ function displayAnswers() {
 function checkAnswer(event) {
   if (currentQuestion >= questions.length - 1) {
     allDone();
-    clearInterval(timeInterval);
+    timer.remove();
     console.log(timeLeft);
   }
   let userChoice = event.target.innerText;
@@ -124,18 +124,28 @@ function allDone() {
 
   submitButton.addEventListener("click", function () {
     console.log(initialInput.value);
-    localStorage.setItem(initialInput.value, timeLeft);
+    localStorage.setItem("score", timeLeft);
+    localStorage.setItem("initials", initialInput.value);
     highScores();
   });
 }
 function highScores() {
   highscoreEl.textContent = "";
   questionEl.textContent = "High Scores";
+  instructions.textContent = "";
   answerGradeEl.remove();
+  startquiz.remove();
+  questionEl.remove();
+  title.textContent = "High Scores";
+  var storedInitials = localStorage.getItem("initials");
+  var storedScore = localStorage.getItem("score");
+
+  questionEl.textContent = storedInitials + storedScore;
 }
 function startQuiz() {
   countdown();
   title.innerHTML = "";
+  instructions.textContent = "";
   startquiz.remove();
   displayQuestion();
   displayAnswers();
