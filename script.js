@@ -13,10 +13,12 @@ var startquiz = document.querySelector("#startquiz");
 var title = document.querySelector("#title");
 
 var highscoreEl = document.querySelector("#highscores");
-
+var highscoreList = document.querySelector("#highscoreList");
 var answerGradeEl = document.querySelector("#answerGrade");
 
 var currentQuestion = 0;
+var initialList = [];
+var scoreList = [];
 
 var questions = [
   {
@@ -51,7 +53,7 @@ var questions = [
   },
   {
     question: "Which of the following does an array not hold?",
-    answers: ["Strings", "Numbers", "Boolean Values", "CSS Styles"],
+    answers: ["Strings", "Numbers", "Boolean Values", "Functions"],
     correct: "Functions",
   },
 ];
@@ -134,24 +136,27 @@ function allDone() {
 
   submitButton.addEventListener("click", function () {
     console.log(initialInput.value);
+
     localStorage.setItem("score", timeLeft);
     localStorage.setItem("initials", initialInput.value);
     highScores();
   });
 }
+
 function highScores() {
   highscoreEl.textContent = "";
   questionEl.textContent = "High Scores";
   instructions.textContent = "";
   answerGradeEl.remove();
   startquiz.remove();
-  questionEl.remove();
   timer.remove();
   title.textContent = "High Scores";
+
   var storedInitials = localStorage.getItem("initials");
   var storedScore = localStorage.getItem("score");
 
-  questionEl.textContent = storedInitials + storedScore;
+  questionEl.textContent =
+    "Initials: " + storedInitials + " Score: " + storedScore;
 }
 function startQuiz() {
   countdown();
