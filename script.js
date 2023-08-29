@@ -3,14 +3,10 @@
 var timer = document.querySelector("#time");
 var timeLeft = 45;
 //question changes each time
-var questions = document.querySelector("#questions");
+var questionEl = document.querySelector("#questions");
 //answers change each time
-var answers = document.querySelector("#answers");
+var answersEl = document.querySelector("#answers");
 
-var answerOne = document.createElement("button");
-var answerTwo = document.createElement("button");
-var answerThree = document.createElement("button");
-var answerFour = document.createElement("button");
 //pop up that says right or wrong and remaind for only 2 seconds
 //start quiz button
 var startquiz = document.querySelector("#startquiz");
@@ -19,6 +15,46 @@ var title = document.querySelector("#title");
 var highscoreEl = document.querySelector("#highscores");
 
 var answerGradeEl = document.querySelector("#answerGrade");
+
+var currentQuestion = 0;
+
+var questions = [
+  {
+    question: "What does CSS stand for?",
+    answers: [
+      "Compunding Style System",
+      "Cascading Style Sheets",
+      "Connecting Style Storage",
+      "Creative Styling Sheets",
+    ],
+    correct: "Cascading Style Sheets",
+  },
+  {
+    question: "In HTML the <p> tag stands for which of the following?",
+    answers: ["a paragraph", "a pause", "punctuation", "parentheses"],
+    correct: "a paragraph",
+  },
+  {
+    question: "JavaScript functions are contained in what?",
+    answers: ["Straight Brackets", "Parentheses", "Commas", "Curly Brackets"],
+    correct: "Curly Brackets",
+  },
+  {
+    question: "What does HTML stand for?",
+    answers: [
+      "Hyphenated Type Maker Language",
+      "Hyper Type Maker Language",
+      "Hyper Text Markup Language",
+      "Hex Type Markup Language",
+    ],
+    correct: "Hyper Text Markup Language",
+  },
+  {
+    question: "Which of the following does an array not hold?",
+    answers: ["Strings", "Numbers", "Boolean Values", "Functions"],
+    correct: "Functions",
+  },
+];
 //DATA~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //highscores tracked
 //time (score) tracked
@@ -33,137 +69,76 @@ function countdown() {
       timer.textContent = timeLeft + " second remaining";
       timeLeft--;
     } else {
+      timeLeft = 0;
       timer.textContent = "";
       clearInterval(timeInterval);
-      highScores();
+      allDone();
     }
   }, 1000);
 }
 
-function questionOne() {
-  questions.textContent = "CSS Stands for:";
-
-  answerOne.textContent = "Compounding Style System";
-  answerTwo.textContent = "Cascading Style Sheets";
-  answerThree.textContent = "Connecting Style Storage";
-  answerFour.textContent = "Creative Style Sheets";
-
-  answers.appendChild(answerOne);
-  answers.appendChild(answerTwo);
-  answers.appendChild(answerThree);
-  answers.appendChild(answerFour);
-
-  answers.addEventListener("click", function () {
-    oneAnswer();
-    questionTwo();
-  });
+function displayQuestion() {
+  questionEl.textContent = questions[currentQuestion].question;
 }
-function oneAnswer(event) {
-  if (event === answerTwo) {
-    answerGradeEl.innerHTML = "<i>Correct!</i>";
-  } else {
-    answerGradeEl.innerHTML = "<i>Wrong!</i>";
-    timeLeft = timeLeft - 10;
+
+function displayAnswers() {
+  answersEl.innerHTML = "";
+  for (let i = 0; i < questions[currentQuestion].answers.length; i++) {
+    const choice = questions[currentQuestion].answers[i];
+    let answerButton = document.createElement("button");
+    answerButton.textContent = choice;
+    answerButton.addEventListener("click", checkAnswer);
+
+    answersEl.appendChild(answerButton);
   }
 }
-function questionTwo() {
-  questions.textContent = "What does the <p> tag indicate in HTML";
+function checkAnswer(event) {
+  if (currentQuestion >= questions.length - 1) {
+    allDone();
+    clearInterval(timeInterval);
+    console.log(timeLeft);
+  }
+  let userChoice = event.target.innerText;
+  let correctAnswer = questions[currentQuestion].correct;
 
-  answerOne.textContent = "Paragraph";
-  answerTwo.textContent = "Pause";
-  answerThree.textContent = "Punctuation";
-  answerFour.textContent = "Parenthesis";
-
-  answers.addEventListener("click", function () {
-    questionThree();
-    twoAnswer();
-  });
-}
-function twoAnswer(event) {
-  if (event === answerOne) {
-    answerGradeEl.innerHTML = "<i>Correct!</i>";
+  if (userChoice === correctAnswer) {
+    alert("you got it right!");
   } else {
-    answerGradeEl.innerHTML = "<i>Wrong!</i>";
+    alert("you got it wrong");
     timeLeft = timeLeft - 10;
   }
+  currentQuestion++;
+  displayQuestion();
+  displayAnswers();
 }
-function questionThree() {
-  questions.textContent =
-    "JavaScript functions are contained in which of the following:";
 
-  answerOne.textContent = "Straight Brackets";
-  answerTwo.textContent = "Parentheses";
-  answerThree.textContent = "Commas";
-  answerFour.textContent = "Curly Brackets";
+function allDone() {
+  questionEl.textContent = "All done! Submit your intials";
+  answersEl.remove();
+  var initialInput = document.createElement("input");
+  initialInput.setAttribute("initials", "text");
+  answerGradeEl.appendChild(initialInput);
+  var submitButton = document.createElement("button");
+  submitButton.textContent = "Submit";
+  answerGradeEl.appendChild(submitButton);
 
-  answers.addEventListener("click", function () {
-    questionFour();
-    threeAnswer();
-  });
-}
-function threeAnswer(event) {
-  if (event === answerFour) {
-    answerGradeEl.innerHTML = "<i>Correct!</i>";
-  } else {
-    answerGradeEl.innerHTML = "<i>Wrong!</i>";
-    timeLeft = timeLeft - 10;
-  }
-}
-function questionFour() {
-  questions.textContent = "HTML Stands for:";
-
-  answerOne.textContent = "Hyphenated Type Maker Language";
-  answerTwo.textContent = "Hyper Type Maker Language";
-  answerThree.textContent = "Hyper Text Markup Language";
-  answerFour.textContent = "Hex Type Markup Language";
-
-  answers.addEventListener("click", function () {
-    questionFive();
-    fourAnswer();
-  });
-}
-function fourAnswer(event) {
-  if (event === answerThree) {
-    answerGradeEl.innerHTML = "<i>Correct!</i>";
-  } else {
-    answerGradeEl.innerHTML = "<i>Wrong!</i>";
-    timeLeft = timeLeft - 10;
-  }
-}
-function questionFive() {
-  questions.innerHTML = "Which of the following does an array <i>not</i> hold?";
-
-  answerOne.textContent = "Strings";
-  answerTwo.textContent = "Variables";
-  answerThree.textContent = "Numbers";
-  answerFour.textContent = "Boolean Values";
-
-  answers.addEventListener("click", function () {
-    fiveAnswer();
+  submitButton.addEventListener("click", function () {
+    console.log(initialInput.value);
+    localStorage.setItem(initialInput.value, timeLeft);
     highScores();
   });
 }
-function fiveAnswer(event) {
-  if (event === answerTwo) {
-    answerGradeEl.innerHTML = "<i>Correct!</i>";
-  } else {
-    answerGradeEl.innerHTML = "<i>Wrong!</i>";
-    timeLeft = timeLeft - 10;
-  }
-}
 function highScores() {
   highscoreEl.textContent = "";
-  questions.textContent = "High Scores";
-  answerOne.remove();
-  answerTwo.remove();
-  answerThree.remove();
-  answerFour.remove();
+  questionEl.textContent = "High Scores";
+  answerGradeEl.remove();
 }
 function startQuiz() {
   countdown();
   title.innerHTML = "";
   startquiz.remove();
-  questionOne();
+  displayQuestion();
+  displayAnswers();
 }
 //USER INTERACTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~
 //start game button
